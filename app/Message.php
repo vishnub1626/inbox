@@ -38,9 +38,15 @@ class Message
     {
         $header = \imap_header($this->stream, $this->number);
 
-        $this->subject = $header->subject;
-        $this->from = $header->fromaddress;
-        $this->to = $header->toaddress;
+        $this->subject = $header->subject ?? '[No subject]';
+        $this->from = [
+            'name' => $header->from[0]->personal ?? null,
+            'email' => $header->from[0]->mailbox . "@" . $header->from[0]->host,
+        ];
+        $this->to = [
+            'name' => $header->to[0]->personal ?? null,
+            'email' => $header->to[0]->mailbox . "@" . $header->to[0]->host,
+        ];
         $this->date = Carbon::createFromFormat('D, j M Y H:i:s O', $header->date)->setTimezone('UTC')->toDateTimeString();
     }
 

@@ -13,9 +13,10 @@ class AvatarController extends Controller
         $colors = ['#2F855A', '#2C7A7B', '#2B6CB0', '#4A5568'];
 
         $avatar = new InitialAvatar();
+        $for = $request->for ?? 'Unknown';
 
-        return $avatar->name($request->for ?? 'Unknown')
-            ->background(Arr::random($colors))
+        return $avatar->name($for)
+            ->background($colors[strlen($for) % 4])
             ->color('#fff')
             ->length(1)
             ->generate()

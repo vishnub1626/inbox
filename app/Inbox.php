@@ -48,7 +48,7 @@ class Inbox extends Model
 
     public function getSenderAvatarUrlAttribute()
     {
-        return url('/avatar?for=' . $this->sender_name ?? $this->from);
+        return url('/avatar?for=' . ($this->sender_name ?: $this->sender_email));
     }
 
     public function path()

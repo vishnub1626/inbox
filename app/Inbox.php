@@ -18,17 +18,6 @@ class Inbox extends Model
         'received_at' => 'datetime'
     ];
 
-    protected static function booted()
-    {
-        static::deleting(function ($message) {
-            (new Mailbox(
-                config('imap.host'),
-                config('imap.username'),
-                config('imap.password')
-            ))->delete($message->number);
-        });
-    }
-
     public static function createFromMessage(Message $message)
     {
         return static::create([

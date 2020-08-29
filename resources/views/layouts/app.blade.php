@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Inbox</title>
     <link rel="stylesheet" href="{{ mix('css/main.css') }}">
+    @yield('head')
 </head>
 
 <body>
@@ -25,6 +26,8 @@
             @yield('content')
         </div>
     </div>
+
+    @yield('scripts')
 </body>
 
 </html>

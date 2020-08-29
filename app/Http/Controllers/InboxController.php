@@ -25,4 +25,19 @@ class InboxController extends Controller
             'message' => $message
         ]);
     }
+
+    public function destroy(Inbox $message)
+    {
+        try {
+            $message->delete();
+
+            return response()->json([
+                'message' => 'Message deleted!',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to delete the message.',
+            ]);
+        }
+    }
 }

@@ -64,9 +64,9 @@ class Mailbox
         }
     }
 
-    public function delete(Message $message)
+    public function delete($messageNumber)
     {
-        \imap_delete($this->stream, $message->number);
+        \imap_delete($this->stream, $messageNumber);
         \imap_expunge($this->stream);
 
         return $this;

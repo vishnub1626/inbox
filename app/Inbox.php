@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Services\Mailbox;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -17,14 +18,25 @@ class Inbox extends Model
         'received_at' => 'datetime'
     ];
 
+    protected static function booted()
+    {
+        static::deleting(function ($message) {
+            (new Mailbox(
+                config('imap.host'),
+                config('imap.username'),
+                config('imap.password')
+            ))->delete($message->number);
+        });
+    }
+
     public static function createFromMessage(Message $message)
     {
         return static::create([
             'sender_email' => $message->from['email'],
             'sender_name' => $message->from['name'],
             'subject' => $message->subject,
-            'body' => $message->body,
-            'html' => $message->html,
+            'body' => $message->body ?? '',
+            'html' => $message->html ?? '',
             'number' => $message->number,
             'uid' => $message->uid,
             'received_at' => $message->date,

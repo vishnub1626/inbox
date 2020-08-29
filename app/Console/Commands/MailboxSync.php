@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Inbox;
+use App\ActivityLog;
 use App\Services\Mailbox;
 use Illuminate\Console\Command;
 
@@ -31,13 +32,19 @@ class MailboxSync extends Command
 
         $messages = $message ? $this->mailbox->messagesAfter($message) : $this->mailbox->allMessages();
 
+        $newMessagesCount = 0;
         foreach ($messages as $message) {
             if ($message) {
                 Inbox::createFromMessage($message);
+                $newMessagesCount++;
             }
         }
 
         $this->mailbox->close();
+
+        if ($newMessagesCount) {
+            ActivityLog::logSystemActivity("{$newMessagesCount} new message(s) fetched.");
+        }
     }
 
     private function getMostRecentMessage()

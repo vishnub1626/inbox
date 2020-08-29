@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\ActivityLog;
 use App\Inbox;
 use App\Services\Mailbox;
 
@@ -14,5 +15,9 @@ class InboxObserver
             config('imap.username'),
             config('imap.password')
         ))->delete($message->number);
+
+        ActivityLog::logUserActivity("Deleted message from {$message->sender_email}.");
+
+        ActivityLog::logSystemActivity("Deleted message from {$message->sender_email} with uid {$message->uid}.");
     }
 }

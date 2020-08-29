@@ -2,17 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\ActivityLog;
 use App\Inbox;
 
 class InboxController extends Controller
 {
     public function index()
     {
+        $q = request('q');
+
         $messages = Inbox::query()
-            ->when(request('q'), function ($query, $q) {
+            ->when($q, function ($query, $q) {
                 $query->search($q);
             })->latest('received_at')
             ->paginate(30);
+
+        if ($q) {
+            ActivityLog::logUserActivity("User searched for {$q}");
+        }
 
         return view('inbox', [
             'messages' => $messages

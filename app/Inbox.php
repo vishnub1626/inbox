@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Inbox extends Model
 {
@@ -19,7 +20,7 @@ class Inbox extends Model
     public static function createFromMessage(Message $message)
     {
         return static::create([
-            'from' => $message->from['email'],
+            'sender_email' => $message->from['email'],
             'sender_name' => $message->from['name'],
             'subject' => $message->subject,
             'body' => $message->body,
@@ -28,6 +29,20 @@ class Inbox extends Model
             'uid' => $message->uid,
             'received_at' => $message->date,
         ]);
+    }
+
+    public function scopeSearch(Builder $query, $q)
+    {
+        $query->where(function ($query) use ($q) {
+            $query->whereRaw("sender_email REGEXP '{$q}'")
+                ->orWhereRaw("subject REGEXP '$q'")
+                ->orWhereRaw("sender_name REGEXP '$q'")
+                ->orWhereRaw("body REGEXP '$q'")
+                ->orWhere('sender_email', 'LIKE', "%{$q}%")
+                ->orWhere('subject', 'LIKE', "%{$q}%")
+                ->orWhere('sender_name', 'LIKE', "%{$q}%")
+                ->orWhere('body', 'LIKE', "%{$q}%");
+        });
     }
 
     public function getSenderAvatarUrlAttribute()

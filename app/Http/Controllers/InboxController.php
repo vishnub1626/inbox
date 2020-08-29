@@ -8,8 +8,14 @@ class InboxController extends Controller
 {
     public function index()
     {
+        $messages = Inbox::query()
+            ->when(request('q'), function ($query, $q) {
+                $query->search($q);
+            })->latest('received_at')
+            ->paginate(30);
+
         return view('inbox', [
-            'messages' => Inbox::latest('received_at')->paginate(3)
+            'messages' => $messages
         ]);
     }
 

@@ -29,10 +29,10 @@
         <div class="flex flex-row justify-between mt-2">
             <div class="flex">
                 <img class="w-10 h-10 mr-2 rounded-full" src="{{ $message->sender_avatar_url }}"
-                    alt="Avatar of {{ $message->from }}">
+                    alt="Avatar of {{ $message->sender_email }}">
                 <div class="text-sm">
-                    <p class="mt-1 font-medium leading-none text-gray-900">{{ $message->sender_name ?? $message->from }}</p>
-                    <p class="mt-1 text-xs leading-none text-gray-600">{{ $message->from }}</p>
+                    <p class="mt-1 font-medium leading-none text-gray-900">{{ $message->sender_name ?? $message->sender_email }}</p>
+                    <p class="mt-1 text-xs leading-none text-gray-600">{{ $message->sender_email }}</p>
                 </div>
             </div>
             <div class="hidden text-sm text-gray-600 md:block">

@@ -7,6 +7,6 @@ class InboxSeeder extends Seeder
 {
     public function run()
     {
-        factory(Inbox::class, 50)->create();
+        factory(Inbox::class, 5000)->create();
     }
 }

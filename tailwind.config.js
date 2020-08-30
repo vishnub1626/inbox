@@ -1,8 +1,12 @@
 module.exports = {
-  purge: [],
-  theme: {
-    extend: {},
-  },
-  variants: {},
-  plugins: [],
-}
+    purge: [
+        "./resources/**/*.blade.php",
+        "./resources/**/*.html",
+        "./resources/**/*.vue"
+    ],
+    theme: {
+        extend: {}
+    },
+    variants: {},
+    plugins: []
+};
